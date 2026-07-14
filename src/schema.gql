@@ -1,0 +1,126 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  bio: String
+  preferences: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  friendRequest: FriendRequest!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type FriendRequest {
+  id: ID!
+  requester: User!
+  recipient: User!
+  status: FriendRequestStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  BLOCKED
+}
+
+type Post {
+  id: ID!
+  content: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  author: User!
+}
+
+type Comment {
+  id: ID!
+  content: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  author: User!
+  post: Post!
+}
+
+type Reaction {
+  id: ID!
+  type: ReactionType!
+  createdAt: DateTime!
+  user: User!
+  post: Post!
+}
+
+enum ReactionType {
+  LIKE
+  UPVOTE
+}
+
+type Query {
+  users: [User!]!
+  friends(userId: String!): [User!]!
+  incomingFriendRequests(userId: String!): [FriendRequest!]!
+  outgoingFriendRequests(userId: String!): [FriendRequest!]!
+  posts: [Post!]!
+  comments: [Comment!]!
+  reactions: [Reaction!]!
+}
+
+type Mutation {
+  createUser(createUserDto: CreateUserDto!): User!
+  sendFriendRequest(input: SendFriendRequestDto!): FriendRequest!
+  respondToFriendRequest(input: RespondFriendRequestDto!, userId: String!): FriendRequest!
+  blockUser(blockerId: String!, blockedId: String!): FriendRequest!
+  createPost(createPostDto: CreatePostDto!): Post!
+  createComment(createCommentDto: CreateCommentDto!): Comment!
+  createReaction(createReactionDto: CreateReactionDto!): Reaction!
+}
+
+input CreateUserDto {
+  username: String!
+  email: String!
+  password: String!
+  bio: String
+}
+
+input SendFriendRequestDto {
+  requesterId: String!
+  recipientId: String!
+}
+
+input RespondFriendRequestDto {
+  requestId: String!
+  action: FriendRequestAction!
+}
+
+enum FriendRequestAction {
+  ACCEPTED
+  DECLINED
+}
+
+input CreatePostDto {
+  content: String!
+  authorId: String!
+}
+
+input CreateCommentDto {
+  content: String!
+  authorId: String!
+  postId: String!
+}
+
+input CreateReactionDto {
+  type: String!
+  userId: String!
+  postId: String!
+}
