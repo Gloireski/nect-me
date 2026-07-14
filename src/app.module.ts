@@ -21,7 +21,7 @@ import { NotificationsModule } from './notifications/notifications.module';
       autoSchemaFile: join(process.cwd(), 'src', 'schema.gql')
     }),
     MongooseModule.forRoot(
-      process.env.MONGODB_URI || 'mongodb+srv://belem:Belem235%40@snp.ts4upow.mongodb.net/?appName=snp'
+      process.env.MONGODB_URI || ''
     ),
     UsersModule,
     PostsModule,
