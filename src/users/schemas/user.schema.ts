@@ -20,8 +20,8 @@ export class User extends Document {
   @Prop()
   bio!: string;
 
-  @Prop({ type: [String] })
-  preferences!: string[];
+  @Prop({ type: Map, of: Boolean, default: {} })
+  preferences!: Map<string, boolean>;
 
   // @Prop({ type: [User], ref: 'User', allowNull: true })
   // friendRequests!: string;

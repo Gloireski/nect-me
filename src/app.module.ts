@@ -13,15 +13,32 @@ import { GroupsModule } from './groups/groups.module';
 import { FriendRequestsModule } from './friend-requests/friend-requests.module';
 import { FollowsModule } from './follows/follows.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { MesssagesModule } from './messsages/messsages.module';
+import { EventsModule } from './events/events.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true
+    })
+    ,
     GraphQLModule.forRoot({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src', 'schema.gql')
+      autoSchemaFile: join(process.cwd(), 'src', 'schema.gql'),
+      subscriptions: {
+        'graphql-ws': {
+          onConnect: (context) => {
+            // handle connection
+          },
+          ondisconnect: (context) => {
+            // handle disconnection
+          },
+        },
+      },
     }),
     MongooseModule.forRoot(
-      process.env.MONGODB_URI || ''
+      process.env.MONGODB_URI!
     ),
     UsersModule,
     PostsModule,
@@ -30,7 +47,9 @@ import { NotificationsModule } from './notifications/notifications.module';
     GroupsModule,
     FriendRequestsModule,
     FollowsModule,
-    NotificationsModule
+    NotificationsModule,
+    MesssagesModule,
+    EventsModule
   ],
   controllers: [AppController],
   providers: [AppService],

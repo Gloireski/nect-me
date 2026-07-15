@@ -2,12 +2,17 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type UserPreference {
+  category: String!
+  enabled: Boolean!
+}
+
 type User {
   id: ID!
   username: String!
   email: String!
   bio: String
-  preferences: [String!]
+  preferences: [UserPreference!]
   createdAt: DateTime!
   updatedAt: DateTime!
   friendRequest: FriendRequest!
@@ -66,6 +71,15 @@ enum ReactionType {
   UPVOTE
 }
 
+type Notification {
+  id: ID!
+  recipient: User!
+  category: String!
+  content: String!
+  read: Boolean!
+  createdAt: DateTime!
+}
+
 type Query {
   users: [User!]!
   friends(userId: String!): [User!]!
@@ -78,12 +92,14 @@ type Query {
 
 type Mutation {
   createUser(createUserDto: CreateUserDto!): User!
+  updatePreferences(input: UpdatePreferencesInput!): User!
   sendFriendRequest(input: SendFriendRequestDto!): FriendRequest!
   respondToFriendRequest(input: RespondFriendRequestDto!, userId: String!): FriendRequest!
   blockUser(blockerId: String!, blockedId: String!): FriendRequest!
   createPost(createPostDto: CreatePostDto!): Post!
   createComment(createCommentDto: CreateCommentDto!): Comment!
   createReaction(createReactionDto: CreateReactionDto!): Reaction!
+  createNotification(createNotificationDto: CreateNotificationDto!): Notification!
 }
 
 input CreateUserDto {
@@ -91,6 +107,16 @@ input CreateUserDto {
   email: String!
   password: String!
   bio: String
+}
+
+input UpdatePreferencesInput {
+  userId: String!
+  preferences: [PreferenceInput!]!
+}
+
+input PreferenceInput {
+  category: String!
+  enabled: Boolean!
 }
 
 input SendFriendRequestDto {
@@ -123,4 +149,14 @@ input CreateReactionDto {
   type: String!
   userId: String!
   postId: String!
+}
+
+input CreateNotificationDto {
+  message: String!
+  recipientId: String!
+}
+
+type Subscription {
+  postAdded: Post!
+  notificationAdded: Notification!
 }

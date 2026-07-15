@@ -3,11 +3,15 @@ import {
   Resolver,
   Query,
   Mutation,
-  Args
+  Args,
+  Subscription
 } from '@nestjs/graphql';
 import { CreatePostDto } from './dto/create-post-dto';
 import { PostsService } from './posts.service';
 import { Post } from './entities/post.entity';
+import { PubSub } from 'graphql-subscriptions';
+
+const pubSub = new PubSub();
 
 @Resolver(of => Post)
 export class PostsResolver {
@@ -26,5 +30,10 @@ export class PostsResolver {
   CreatePostDto
   ) {
     return this.postsService.create(createPostDto);
+  }
+
+  @Subscription(returns => Post)
+  postAdded() {
+    return pubSub.asyncIterableIterator('postAdded');
   }
 }

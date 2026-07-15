@@ -1,5 +1,6 @@
 // src/users/entities/user.entity.ts
 import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { UserPreference } from './user-preference.entity';
 
 @ObjectType()
 export class User {
@@ -15,8 +16,8 @@ export class User {
   @Field({ nullable: true })
   bio?: string;
 
-  @Field(() => [String], { nullable: true })
-  preferences?: string[];
+  @Field(() => [UserPreference], { nullable: true })
+  preferences?: UserPreference[];
 
   @Field()
   createdAt!: Date;

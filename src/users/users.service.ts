@@ -27,4 +27,19 @@ export class UsersService {
     }
     return user;
   }
+
+  async updatePreferences(
+    userId: string,
+    preferences: Map<string, boolean>
+  ): Promise<User> {
+    const updatedUser = await this.userModel
+      .findByIdAndUpdate(userId, { preferences }, { new: true })
+      .exec();
+
+    if (!updatedUser) {
+      throw new NotFoundException(`User with id "${userId}" not found.`);
+    }
+
+    return updatedUser;
+  }
 }
