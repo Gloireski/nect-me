@@ -21,3 +21,10 @@ export class Post extends Document {
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);
+
+PostSchema.virtual('id').get(function (this: any) {
+  return this._id.toHexString();
+});
+
+PostSchema.set('toJSON', { virtuals: true });
+PostSchema.set('toObject', { virtuals: true });

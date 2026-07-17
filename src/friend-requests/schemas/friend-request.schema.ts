@@ -22,3 +22,10 @@ export const FriendRequestSchema = SchemaFactory.createForClass(FriendRequest);
 
 // empêche deux demandes identiques dans le même sens
 FriendRequestSchema.index({ requester: 1, recipient: 1 }, { unique: true });
+
+FriendRequestSchema.virtual('id').get(function (this: any) {
+  return this._id.toHexString();
+});
+
+FriendRequestSchema.set('toJSON', { virtuals: true });
+FriendRequestSchema.set('toObject', { virtuals: true });

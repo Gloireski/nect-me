@@ -23,14 +23,8 @@ export class User extends Document {
   @Prop({ type: Map, of: Boolean, default: {} })
   preferences!: Map<string, boolean>;
 
-  // @Prop({ type: [User], ref: 'User', allowNull: true })
-  // friendRequests!: string;
-
-  // @Prop({ type: [User], ref: 'user', allowNull: true})
-  // followers!: User;
-
-  // @Prop({ type: [User], ref: 'user', allowNull: true})
-  // followings!: User;
+  @Prop({ type: String, default: null })
+  refreshTokenHash!: string | null;
 
   @Prop({ default: Date.now })
   createdAt!: Date;
@@ -39,5 +33,10 @@ export class User extends Document {
   updatedAt!: Date;
 }
 
-export const UserSchema =
-SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(User);
+UserSchema.virtual('id').get(function (this: any) {
+  return this._id.toHexString();
+});
+
+UserSchema.set('toJSON', { virtuals: true });
+UserSchema.set('toObject', { virtuals: true });

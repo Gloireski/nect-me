@@ -2,8 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { UpdateUserInput } from './dto/update-user.input';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './entities/user.entity';
 import { Model } from 'mongoose';
+import { User } from './schemas/user.schema';
 
 @Injectable()
 export class UsersService {
@@ -41,5 +41,13 @@ export class UsersService {
     }
 
     return updatedUser;
+  }
+
+  async findByEmail(email: string): Promise<User | null> {
+    return await this.userModel.findOne({ email }).exec();
+  }
+
+  async setRefreshTokenHash(userId: string, hash: string | null): Promise<void> {
+    await this.userModel.findByIdAndUpdate(userId, { refreshTokenHash: hash }).exec();
   }
 }

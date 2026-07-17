@@ -16,6 +16,7 @@ import { NotificationsModule } from './notifications/notifications.module';
 import { MesssagesModule } from './messsages/messsages.module';
 import { EventsModule } from './events/events.module';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ConfigModule } from '@nestjs/config';
           },
         },
       },
+      context: ({ req, res }) => ({ req, res }),
     }),
     MongooseModule.forRoot(
       process.env.MONGODB_URI!
@@ -49,7 +51,8 @@ import { ConfigModule } from '@nestjs/config';
     FollowsModule,
     NotificationsModule,
     MesssagesModule,
-    EventsModule
+    EventsModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],

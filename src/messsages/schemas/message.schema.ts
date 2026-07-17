@@ -18,3 +18,10 @@ export class Message extends Document {
 
 export const MessageSchema = SchemaFactory.createForClass(Message);
 MessageSchema.index({ sender: 1, recipient: 1, createdAt: -1 }); // requêtes de conversation efficaces
+
+MessageSchema.virtual('id').get(function (this: any) {
+  return this._id.toHexString();
+});
+
+MessageSchema.set('toJSON', { virtuals: true });
+MessageSchema.set('toObject', { virtuals: true });

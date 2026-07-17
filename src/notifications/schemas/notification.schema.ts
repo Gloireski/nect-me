@@ -23,5 +23,11 @@ export class Notification extends Document {
   @Prop({ type: Boolean, default: false })
   read!: boolean;
 }
-export const NotificationSchema =
-SchemaFactory.createForClass(Notification);
+export const NotificationSchema = SchemaFactory.createForClass(Notification);
+
+NotificationSchema.virtual('id').get(function (this: any) {
+  return this._id.toHexString();
+});
+
+NotificationSchema.set('toJSON', { virtuals: true });
+NotificationSchema.set('toObject', { virtuals: true });

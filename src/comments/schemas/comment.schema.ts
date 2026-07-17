@@ -32,5 +32,11 @@ export class Comment extends Document {
   @Prop({ type: String, ref: 'Post', required: true })
   post!: Post;
 }
-export const CommentSchema =
-SchemaFactory.createForClass(Comment);
+export const CommentSchema = SchemaFactory.createForClass(Comment);
+
+CommentSchema.virtual('id').get(function (this: any) {
+  return this._id.toHexString();
+});
+
+CommentSchema.set('toJSON', { virtuals: true });
+CommentSchema.set('toObject', { virtuals: true });

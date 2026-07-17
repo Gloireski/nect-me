@@ -19,6 +19,9 @@ export class User {
   @Field(() => [UserPreference], { nullable: true })
   preferences?: UserPreference[];
 
+  @Field({ nullable: true })
+  refreshTokenHash?: string;
+
   @Field()
   createdAt!: Date;
 
